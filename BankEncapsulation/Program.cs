@@ -35,6 +35,7 @@
             Erans_Checking.GetBalance();
             Erans_Checking.Withdraw();
             Erans_Checking.GetBalance();
+
         }
     }
 }
