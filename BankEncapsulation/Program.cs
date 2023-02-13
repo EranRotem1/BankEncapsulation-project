@@ -2,39 +2,40 @@
 {
     public class BankAccount
     {
-        private double balance;
+        private double _balance;
         public double Balance
         { get ; set ; }
 
         public BankAccount(double amount)
         {
-            balance = amount;
+            _balance = amount;
         }
-        public void Deposit()
+        
+        public void Deposit(double amount)
         {
-            Console.WriteLine("Deposit amount: ");
-            var amount = int.Parse(Console.ReadLine());
-            balance += amount;
+            _balance += amount;
 
         }
-        public void GetBalance()
+       
+        public double GetBalance()
         {
-            Console.WriteLine( $"Balance: {balance}");
+            return _balance;
         }
-        public void Withdraw() 
+
+       
+        public void Withdraw(double amount) 
         {
-            Console.WriteLine("Withdraw amount: ");
-            var amount = int.Parse(Console.ReadLine());
-            balance -= amount;  
+            _balance -= amount;  
         }
         //write method to control workflow
+       
         static void Main(string[] args)
         {
             BankAccount Erans_Checking = new BankAccount(0);           
-            Erans_Checking.Deposit();
-            Erans_Checking.GetBalance();
-            Erans_Checking.Withdraw();
-            Erans_Checking.GetBalance();
+            Erans_Checking.Deposit(2500);
+            Console.WriteLine(Erans_Checking.GetBalance());
+            Erans_Checking.Withdraw(500);
+            Console.WriteLine(Erans_Checking.GetBalance());
 
         }
     }
