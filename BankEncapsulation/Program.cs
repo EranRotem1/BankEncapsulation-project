@@ -3,8 +3,7 @@
     public class BankAccount
     {
         private double _balance;
-        public double Balance
-        { get ; set ; }
+        public double Balance { get ; set ; }
 
         public BankAccount(double amount)
         {
