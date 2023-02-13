@@ -8,6 +8,7 @@
         public BankAccount(double amount)
         {
             _balance = amount;
+            //Jack's Comment.
         }
         
         public void Deposit(double amount)
