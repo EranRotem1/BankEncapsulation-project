@@ -35,7 +35,7 @@
             Erans_Checking.Deposit(2500);
             Console.WriteLine(Erans_Checking.GetBalance());
             Erans_Checking.Withdraw(500);
-            Console.WriteLine(Erans_Checking.GetBalance());
+            //Console.WriteLine(Erans_Checking.GetBalance());
 
         }
     }
