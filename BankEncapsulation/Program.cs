@@ -3,39 +3,47 @@
     public class BankAccount
     {
         private double _balance;
-        public double Balance { get ; set ; }
-
-        public BankAccount(double amount)
+        public double Balance { get; set; }
+        
+        
+        public BankAccount()
         {
-            _balance = amount;
-            //Jack's Comment.
+            Balance = _balance;
         }
+
         
         public void Deposit(double amount)
         {
-            _balance += amount;
+            Balance += amount;
 
         }
-       
+
         public double GetBalance()
         {
-            return _balance;
+            return Balance;
         }
 
-       
-        public void Withdraw(double amount) 
+
+        public void Withdraw(double amount)
         {
-            _balance -= amount;  
+            Balance -= amount;
         }
-        //write method to control workflow
-       
-        static void Main(string[] args)
+
+        public void BankingHistory()
         {
-            BankAccount Erans_Checking = new BankAccount(0);           
-            Erans_Checking.Deposit(2500);
-            Console.WriteLine(Erans_Checking.GetBalance());
-            Erans_Checking.Withdraw(500);
-            Console.WriteLine(Erans_Checking.GetBalance());
+
+        }
+
+        
+
+        public static void Main(string[] args)
+        {
+            ScreenSelect.SelectScreen();
+            //BankAccount Erans_Checking = new BankAccount();           
+            //Erans_Checking.Deposit(2500);
+            //Console.WriteLine(Erans_Checking.GetBalance());
+            //Erans_Checking.Withdraw(500);
+            //Console.WriteLine(Erans_Checking.GetBalance());
 
         }
     }
