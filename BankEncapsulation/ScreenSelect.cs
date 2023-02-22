@@ -1,11 +1,18 @@
-﻿using System;
+﻿
+using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.Metrics;
 using System.Linq;
+using System.Net.WebSockets;
+using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
-using static BankEncapsulation.BankAccount;
+using BankEncapsulation.BankAccount;
+
+
 
 namespace BankEncapsulation
+<<<<<<< HEAD
 {   
     public enum Options
         {
@@ -32,11 +39,33 @@ namespace BankEncapsulation
             var optionNumber = Enumerable.Range(1, options).ToArray();
             int user = int.Parse(Console.ReadLine());
             while (!optionNumber.Contains(user))
+=======
+{
+    public class ScreenSelect
+    {
+        public static int SelectScreen(int loopStart, int loopEnd)
+        {
+            Console.WriteLine("Please enter the digit of your selection:\n");
+
+            int fromOne = 1;
+            int difference = loopStart - fromOne;
+            for (int i = loopStart; i <= loopEnd; i++)
+>>>>>>> eb65b5980d6396aa7e809453e1864eaf5b9bb8be
             {
-                Console.WriteLine("Please select valid option:");
-                user = int.Parse(Console.ReadLine());
+                Console.WriteLine(($"{fromOne}. {Enum.GetName(typeof(Options), i)}"));
+                fromOne++;
             }
-            return user;
+            Console.WriteLine();
+            var optionNumber = Enumerable.Range(loopStart, loopEnd).ToArray();
+            int optionChosen = int.Parse(Console.ReadLine());
+            optionChosen += difference;
+            while (!optionNumber.Contains(optionChosen))
+            {
+                Console.WriteLine("Please enter valid digit:");
+                optionChosen = int.Parse(Console.ReadLine());
+                optionChosen+= difference;
+            }
+            return optionChosen;
         }
     }
 }
