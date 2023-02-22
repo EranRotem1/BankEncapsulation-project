@@ -28,62 +28,59 @@ namespace BankEncapsulation
 
             //*****************************************************************************************************************
 
-<<<<<<< HEAD
-        public static void Main(string[] args)
-        {
-            Console.WriteLine("K&R Banking\n-Input option number:\n1. Personal info\n2. Account info\n3. Credit Cards\n4. Loans\n5. Help");
-            switch(ScreenSelect.ValidInput(5))
-            {
-                case 1: //personal info
-                    Console.Clear();
-                    Console.WriteLine("1. View Profile\n2. Edit Profile");
-                    switch(ScreenSelect.ValidInput(2))
-                    {
-                        case 1:
-                            Console.Clear();
-                            Console.WriteLine();
-                            break;
+        //public static void Main(string[] args)
+        //{
+        //    Console.WriteLine("K&R Banking\n-Input option number:\n1. Personal info\n2. Account info\n3. Credit Cards\n4. Loans\n5. Help");
+        //    switch(ScreenSelect.ValidInput(5))
+        //    {
+        //        case 1: //personal info
+        //            Console.Clear();
+        //            Console.WriteLine("1. View Profile\n2. Edit Profile");
+        //            switch(ScreenSelect.ValidInput(2))
+        //            {
+        //                case 1:
+        //                    Console.Clear();
+        //                    Console.WriteLine();
+        //                    break;
 
-                        case 2:
-                            Console.Clear();
-                            Console.WriteLine();
-                            break;
-                    }
-                    break;
+        //                case 2:
+        //                    Console.Clear();
+        //                    Console.WriteLine();
+        //                    break;
+        //            }
+        //            break;
 
-                case 2:
-                    Console.Clear();
-                    Console.WriteLine();
-                    break;
+        //        case 2:
+        //            Console.Clear();
+        //            Console.WriteLine();
+        //            break;
 
-                case 3:
-                    Console.Clear();
+        //        case 3:
+        //            Console.Clear();
                     
-                    Console.WriteLine();
-                    break;
+        //            Console.WriteLine();
+        //            break;
 
-                case 4:
-                    Console.Clear();
-                    Console.WriteLine();
-                    break;
+        //        case 4:
+        //            Console.Clear();
+        //            Console.WriteLine();
+        //            break;
 
-                case 5:
-                    Console.Clear();
-                    Console.WriteLine();
-                    break;
+        //        case 5:
+        //            Console.Clear();
+        //            Console.WriteLine();
+        //            break;
 
-            }
+        //    }
             //ScreenSelect.SelectScreen();
             //BankAccount Erans_Checking = new BankAccount();           
             //Erans_Checking.Deposit(2500);
             //Console.WriteLine(Erans_Checking.GetBalance());
             //Erans_Checking.Withdraw(500);
             //Console.WriteLine(Erans_Checking.GetBalance());
-=======
             Console.WriteLine("\nSet-Up Successful");
             Console.WriteLine("\nPress any key to continue to the Start-Up screen.\n");
             Console.ReadKey();
->>>>>>> eb65b5980d6396aa7e809453e1864eaf5b9bb8be
 
             StartUpScreen.GoToStartUpScreen(EJ_Checking, EJ_CreditCard, EJ_Loan);
 
