@@ -6,11 +6,8 @@ using System.Threading.Tasks;
 using static BankEncapsulation.BankAccount;
 
 namespace BankEncapsulation
-{
-    public class ScreenSelect
-    {
-        //Screen selection 
-        public enum Options
+{   
+    public enum Options
         {
             personal = 1,
             account,
@@ -18,14 +15,17 @@ namespace BankEncapsulation
             loans,
             help
         }
+    public class ScreenSelect
+    {
+        //Screen selection 
+        
         public static Options currentScreen;
 
         public static void SelectScreen()
         {
             Console.WriteLine("1. Personal info\n2. Account info\n3. Credit Cards\n4. Loans\n5. Help");
             currentScreen = (Options)ValidInput(5);
-            //temp for test purposes
-            //Console.WriteLine(currentScreen);
+            //ConsoleWrite outside of the method, input an enum as param, use ValidInput on that, in VI argument put Enum.GetNames(typeof(arg))
         }
         public static int ValidInput(int options)
         {
@@ -38,6 +38,5 @@ namespace BankEncapsulation
             }
             return user;
         }
-
     }
 }
