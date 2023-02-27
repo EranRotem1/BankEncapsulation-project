@@ -12,36 +12,46 @@ namespace BankEncapsulation.PersonalInformation
         public static void GoToChangeUsername(BankAccount.BankAccount account, CreditCard.CreditCard card, Loans.Loan loan)
         {
             Console.Clear();
-            Console.WriteLine("Change Username\n");
-            string username1 = "1";
-            string username2 = "2";
-            bool usernameTaken = false;
+            Console.WriteLine("Change Username Screen\n\n");
 
-            while (username1 != username2 || usernameTaken == true)
+            string oldUserName = HardCodedUserInfoClass.GetUserName();
+            string entry = "";
+
+            Console.WriteLine("Please enter your old username:\n\n");
+            entry = Console.ReadLine();
+            Console.WriteLine();
+
+            while (entry != oldUserName)
             {
-                usernameTaken = false;
-                Console.WriteLine("Please enter the new desired username:");
-                username1 = Console.ReadLine();
-                Console.WriteLine("Please enter the new desired username again:");
-                username2 = Console.ReadLine();
-                if (username1 != username2)
-                {
-                    Console.WriteLine("Usernames entered do not match. Try again.");
-                }
-                else
-                {
-                    for (int i = 0; i < 10;i++) //Code to check if username is already taken. 10 will be replaced with registered username list name length
-                    {
-                        if (username1 == "")
-                        {
-                            usernameTaken = true;
-                            break;
-                        }
-                    }
-                }
-
+                Console.WriteLine("Invalid Entry. Please try again.\n");
+                entry = Console.ReadLine();
             }
-            //Code for actually changing username
+
+            Console.WriteLine($"\nPlease enter your new username.\n\n");
+            string username1 = Console.ReadLine();
+            Console.WriteLine();
+
+            Console.WriteLine($"\nPlease enter your new username again.\n\n");
+            string username2 = Console.ReadLine();
+            Console.WriteLine();
+
+            while (username1 != username2)
+            {
+                Console.WriteLine("\nUsername entries did not match. Try Again.\n\n");
+                Console.WriteLine($"\nPlease enter your new username.\n\n");
+                username1 = Console.ReadLine();
+                Console.WriteLine();
+
+                Console.WriteLine($"\nPlease enter your new username again.\n\n");
+                username2 = Console.ReadLine();
+                Console.WriteLine();
+            }
+
+            HardCodedUserInfoClass.SetUserName(username1);
+
+            Console.WriteLine("\n*****************************************************************************\n\n");
+            Console.WriteLine("Username changed successfully. \n\n");
+
             MainOrExit.GoToMainOrExit(account, card, loan);
         }
     }

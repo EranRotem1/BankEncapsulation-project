@@ -1,10 +1,12 @@
-﻿using System;
+﻿using BankEncapsulation.Loans;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.Metrics;
 using System.Globalization;
 using System.Linq;
 using System.Net.NetworkInformation;
+using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 using System.Transactions;
@@ -88,7 +90,7 @@ namespace BankEncapsulation.CreditCard
             CCTransaction transaction6 = new CCTransaction(entry6, entry6.Year, entry6.Month, entry6.Day, "Payment", amount, AvailableCredit, UsedCredit);
             myCCTransactionHistory.TransactionHist_0.Add(transaction6);
 
-            Console.WriteLine("CC Payment log creation successful");
+            Console.WriteLine("CC Payment log creation successful\n\n");
         }
 
         public void CCCreateTestLogPurchase(double amount) //Creates Fake Log - ONLY FOR TESTING PURPOSES
@@ -130,7 +132,7 @@ namespace BankEncapsulation.CreditCard
             CCTransaction transaction6 = new CCTransaction(entry6, entry6.Year, entry6.Month, entry6.Day, "Purchase", amount, AvailableCredit, UsedCredit);
             myCCTransactionHistory.TransactionHist_0.Add(transaction6);
 
-            Console.WriteLine("\nCC Purchase log creation successful.");
+            Console.WriteLine("CC Purchase log creation successful.\n\n");
         }
         public double CCCheckAvailableCredit() //Check available credit limit (i.e. how much credit is unused)
         {
@@ -142,30 +144,48 @@ namespace BankEncapsulation.CreditCard
             return UsedCredit;
         }
 
-        public void CCMakePurchase(double amount)
+        public void CCMakePurchase(double amount, BankAccount.BankAccount account, CreditCard card, Loans.Loan loan)
         {
-            CCCheckPurchaseAmt(amount);
+            CCCheckPurchaseAmt(amount, account, card, loan);
         }
 
-        public void CCCheckPurchaseAmt(double amount)
+        public void CCCheckPurchaseAmt(double amount, BankAccount.BankAccount account, CreditCard card, Loans.Loan loan)
         {
             amount = Math.Abs(amount);
             if (AvailableCredit == 0)
             {
-                Console.WriteLine($"Error: Card Declined. Max credit limit of {MaxCredit} has been reached.");
+                Console.WriteLine($"Error: Card Declined. Max credit limit of {MaxCredit} has been reached.\n\n");
                 //throw new Exception($"Error: Card Declined. Max credit limit of {_maxCredit} has been reached.");
+                MainOrExit.GoToMainOrExit(account, card, loan);
             }
             else if (AvailableCredit < amount)
             {
-                Console.WriteLine($"Error: Purchase amount of ${amount} is greater than the current available credit limit of ${AvailableCredit}.");
+                Console.WriteLine($"Error: Purchase amount of ${amount} is greater than the current available credit limit of ${AvailableCredit}.\n\n");
                 //throw new Exception($"Error: Purachase amount of ${amount} is greater than the current available credit limit of ${_availableCredit}.");
+                MainOrExit.GoToMainOrExit(account, card, loan);
             }
             else
             {
-                CCUseCredit(amount);
+                bool success = CCUseCredit(amount);
+
+                if (success == true)
+                {
+                    Console.WriteLine("Purchase Successful\n\n");
+                }
+                Console.WriteLine("Would you like to make another purchase?\n\n");
+                string yesNo = DoubleCheckSelection.DoubleCheckYesNo();
+
+                if (yesNo == "Y")
+                {
+                    CCMakePurchaseClass.GoToMakePurchase(account, card, loan);
+                }
+                else
+                {
+                    MainOrExit.GoToMainOrExit(account, card, loan);
+                }
             }
         }
-        private void CCUseCredit(double amount)
+        private bool CCUseCredit(double amount)
         {
             UsedCredit += amount;
 
@@ -174,15 +194,19 @@ namespace BankEncapsulation.CreditCard
             CCTransaction transaction1 = new CCTransaction(now, now.Year, now.Month, now.Day, "Purchase", amount, AvailableCredit, UsedCredit);
 
             myCCTransactionHistory.TransactionHist_0.Add(transaction1);
+
+            return true;
         }
-        public void CCCheckTransactionHistory() //For all history
+        public void CCCheckTransactionHistory(BankAccount.BankAccount account, CreditCard card, Loans.Loan loan) //For all history
         {
             for (int i = 0; i < myCCTransactionHistory.TransactionHist_0.Count; i++)
             {
                 CCPrintTransactionHistory(i);
             }
+
+            MainOrExit.GoToMainOrExit(account, card, loan);
         }
-        public void CCCheckLastStatement() //Check last statement for prior billing cycle
+        public void CCCheckLastStatement(BankAccount.BankAccount account, CreditCard card, Loans.Loan loan) //Check last statement for prior billing cycle
         {
             DateTime now = DateTime.Now;
             int year;
@@ -190,10 +214,10 @@ namespace BankEncapsulation.CreditCard
             year = now.Month == 1 ? now.Year - 1 : now.Year;
             lastMonth = now.Month == 1 ? 12 : now.Month - 1;
 
-            CCCheckTransactionHistory(lastMonth, year);
+            CCCheckTransactionHistory(lastMonth, year, account, card, loan);
         }
 
-        public void CCCheckTransactionHistory(int lastMonth, int year) //For Last Statement
+        public void CCCheckTransactionHistory(int lastMonth, int year, BankAccount.BankAccount account, CreditCard card, Loans.Loan loan) //For Last Statement - example of method overload
         {
             bool atLeastOneTransaction = false;
             int i = 0;
@@ -208,25 +232,27 @@ namespace BankEncapsulation.CreditCard
             if (atLeastOneTransaction == true)
             {
                 Console.WriteLine();
-                Console.WriteLine($"Statement Balance Due: ${myCCTransactionHistory.TransactionHist_0[myCCTransactionHistory.TransactionHist_0.Count - 1].NewBal}");
+                Console.WriteLine($"Statement Balance Due: ${myCCTransactionHistory.TransactionHist_0[myCCTransactionHistory.TransactionHist_0.Count - 1].NewBal}\n\n");
             }
             else
             {
-                Console.WriteLine("There was no account activity within the last statement cycle.");
+                Console.WriteLine("There was no account activity within the last statement cycle.\n\n");
             }
 
+            MainOrExit.GoToMainOrExit(account, card, loan);
         }
-        public void CCCheckHistoryRange() //Check transaction history for specified period of time and type
+        public void CCCheckHistoryRange(BankAccount.BankAccount account, CreditCard card, Loans.Loan loan) //Check transaction history for specified period of time and type
         {
             Console.Clear();
 
-            Console.WriteLine("Please enter the number of thhe transaction type you would like to display:");
+            Console.WriteLine("What type of transaction would you like to display?\n");
 
             int loopStart = 6;
             int loopEnd = 8;
             string transactionType = "";
 
             int selectedOption = ScreenSelect.SelectScreen(loopStart, loopEnd);
+            Console.WriteLine();
 
             //** Credit Card Transaction History Options **
 
@@ -250,7 +276,7 @@ namespace BankEncapsulation.CreditCard
                     break;
 
                 default:
-                    Console.WriteLine("Error: Invalid option selected. This should never happen.");
+                    Console.WriteLine("Error: Invalid option selected. This should never happen.\n");
                     break;
             }
 
@@ -259,31 +285,35 @@ namespace BankEncapsulation.CreditCard
 
             if (yesNo == "N")
             {
-                CCCheckHistoryRange();
+                CCCheckHistoryRange(account, card, loan);
             }
 
             DateTime startDate = ValidInputDates.SelectDate("start");
+            Console.WriteLine();
 
             DateTime endDate = ValidInputDates.SelectDate("end");
-            Console.WriteLine($"Are the dates you entered below correct?\n Start Date: {startDate}\n End Date: {endDate}");
+            Console.WriteLine();
+
+            Console.WriteLine($"Are the dates you entered below correct?\nStart Date: {startDate}\nEnd Date: {endDate}\n");
 
             yesNo = DoubleCheckSelection.DoubleCheckYesNo();
+            Console.WriteLine();
 
             if (yesNo == "N")
             {
-                CCCheckHistoryRange();
+                CCCheckHistoryRange(account, card, loan);
             }
 
             if (transactionType == "All")
             {
-                CCCheckTransactionHistory(startDate, endDate);
+                CCCheckTransactionHistory(startDate, endDate, account, card, loan);
             }
             else
             {
-                CCCheckTransactionHistory(transactionType, startDate, endDate);
+                CCCheckTransactionHistory(transactionType, startDate, endDate, account, card, loan);
             }
         }
-        public void CCCheckTransactionHistory(string transactionType, DateTime startDate, DateTime endDate) //For transactions for specified period of time and type
+        public void CCCheckTransactionHistory(string transactionType, DateTime startDate, DateTime endDate, BankAccount.BankAccount account, CreditCard card, Loans.Loan loan) //For transactions for specified period of time and type - method overload
         {
             for (int i = 0; i < myCCTransactionHistory.TransactionHist_0.Count; i++) //Front end will take care of applicable data range start I am thinking
             {
@@ -294,9 +324,10 @@ namespace BankEncapsulation.CreditCard
                     CCPrintTransactionHistory(i);
                 }
             }
+            MainOrExit.GoToMainOrExit(account, card, loan);
         }
 
-        public void CCCheckTransactionHistory(DateTime startDate, DateTime endDate) //For transactions for specified period of time (prints all types) //Method Overload of above
+        public void CCCheckTransactionHistory(DateTime startDate, DateTime endDate, BankAccount.BankAccount account, CreditCard card, Loans.Loan loan) //For transactions for specified period of time (prints all types) - method overload
         {
             for (int i = 0; i < myCCTransactionHistory.TransactionHist_0.Count; i++) //Front end will take care of applicable data range start I am thinking
             {
@@ -306,6 +337,7 @@ namespace BankEncapsulation.CreditCard
                     CCPrintTransactionHistory(i);
                 }
             }
+            MainOrExit.GoToMainOrExit(account, card, loan);
         }
 
         public void CCPrintTransactionHistory(int i)
@@ -314,70 +346,106 @@ namespace BankEncapsulation.CreditCard
             Console.WriteLine($"Transaction Date: {myCCTransactionHistory.TransactionHist_0[i].Date}");
             Console.WriteLine($"Transaction Amount: ${myCCTransactionHistory.TransactionHist_0[i].TransactionAmt}");
             Console.WriteLine($"Avaialble Credit after Transaction: ${myCCTransactionHistory.TransactionHist_0[i].NewCredit}");
-            Console.WriteLine($"Effective Balance after Transacation: ${myCCTransactionHistory.TransactionHist_0[i].NewBal}");
-            Console.WriteLine();
+            Console.WriteLine($"Effective Balance after Transacation: ${myCCTransactionHistory.TransactionHist_0[i].NewBal}\n\n");
         }
 
-        public void CCMakeCredChange(double amount)
+        public double CCCheckCreditLimit() //Check available credit limit (i.e. how much credit is unused)
         {
-            CCCheckCredLimChng(amount);
+            return MaxCredit;
+        }
+        public void CCMakeCredChange(double amount, BankAccount.BankAccount account, CreditCard card, Loans.Loan loan)
+        {
+            CCCheckCredLimChng(amount, account, card, loan);
         }
 
-        public void CCCheckCredLimChng(double amount)
+        public void CCCheckCredLimChng(double amount, BankAccount.BankAccount account, CreditCard card, Loans.Loan loan)
         {
             amount = Math.Abs(amount);
-            HardCodedUserInfoClass instance = new HardCodedUserInfoClass();
-            double annualIncome = instance.GetAnnualIncome();
+            double annualIncome = HardCodedUserInfoClass.GetAnnualIncome();
+            bool success = false;
             if (amount > annualIncome / 12) //Note: Annual income hardcoded for now
             {
-                Console.WriteLine($"Error: Credit Limit Change Request Denied.");
+                Console.WriteLine($"Error: Credit Limit Change Request Denied.\n\n");
                 //throw new Exception($"Error: Credit Limit Change Request Denied.");
             }
             else if (amount < UsedCredit)
             {
-                Console.WriteLine($"Error: Outstanding balance of {UsedCredit} exceeds new credit limit ceiling.");
+                Console.WriteLine($"Error: Outstanding balance of {UsedCredit} exceeds new requested credit limit ceiling.\n\n");
                 //throw new Exception($"Error: Outstanding balance of {_usedCredit} exceeds new credit limit ceiling.");
             }
             else
             {
-                CCChangeCreditLimit(amount);
+                success = CCChangeCreditLimit(amount);
             }
+
+            if (success == true)
+            {
+                Console.WriteLine("\n---------------------------------------------------------------------------\n");
+                Console.WriteLine($"Operation Successful: Credit limit is now changed to ${MaxCredit}.\n\n");
+            }
+            MainOrExit.GoToMainOrExit(account, card, loan);
         }
 
-        private void CCChangeCreditLimit(double amount)
+        private bool CCChangeCreditLimit(double amount)
         {
             MaxCredit = amount;
-            Console.WriteLine($"Operation Successful: Credit limit is now changed to ${MaxCredit}.");
             AvailableCredit = MaxCredit - UsedCredit;
+            return true;
         }
 
 
-        public void CCMakePayment(double amount)
+        public void CCMakePayment(double amount, BankAccount.BankAccount account, CreditCard card, Loans.Loan loan)
         {
-            CCCheckPaymentAmt(amount);
+            CCCheckPaymentAmt(amount, account, card, loan);
         }
 
-        public void CCCheckPaymentAmt(double amount)
+        public void CCCheckPaymentAmt(double amount, BankAccount.BankAccount account, CreditCard card, Loans.Loan loan)
         {
             amount = Math.Abs(amount);
-            if (UsedCredit == 0)
+            Console.WriteLine($"Is the payment amount of ${amount} that you entered correct?\n");
+            string yesNo = DoubleCheckSelection.DoubleCheckYesNo();
+
+            if (yesNo == "N")
             {
-                Console.WriteLine("Error: Balance is currently 0. No payment necessary.");
-                //throw new Exception("Error: Balance is currently 0. No payment necessary.");
-            }
-            else if (UsedCredit < amount)
-            {
-                Console.WriteLine($"Error: Payment aount of ${amount} is greater than the current outstanding balance of {UsedCredit}." +
-                                    $"Please enter an amount that is less than your current outstanding balance.");
-                //throw new Exception($"Error: Payment aount of ${amount} is greater than the current outstanding balance of {_usedCredit}." +
-                //                    $"Please enter an amount that is less than your current outstanding balance.");
+                CCMakePaymentClass.GoToMakePayment(account, card, loan);
             }
             else
             {
-                CCCreditPayment(amount);
+                if (UsedCredit == 0)
+                {
+                    Console.WriteLine("Error: Balance is currently 0. No payment necessary.\n\n");
+                    //throw new Exception("Error: Balance is currently 0. No payment necessary.");
+                    MainOrExit.GoToMainOrExit(account, card, loan);
+                }
+                else if (UsedCredit < amount)
+                {
+                    Console.WriteLine($"Error: Payment amount of ${amount} is greater than your current outstanding balance of ${UsedCredit}.");
+                    //throw new Exception($"Error: Payment aount of ${amount} is greater than the current outstanding balance of {_usedCredit}." +
+                    MainOrExit.GoToMainOrExit(account, card, loan);
+                }
+                else
+                {
+                    bool success = CCCreditPayment(amount);
+
+                    if (success == true)
+                    {
+                        Console.WriteLine("Payment Successful\n\n");
+                    }
+                    Console.WriteLine("Would you like to make another payment?\n\n");
+                    yesNo = DoubleCheckSelection.DoubleCheckYesNo();
+
+                    if (yesNo == "Y")
+                    {
+                        CCMakePaymentClass.GoToMakePayment(account, card, loan);
+                    }
+                    else
+                    {
+                        MainOrExit.GoToMainOrExit(account, card, loan);
+                    }
+                }
             }
         }
-        private void CCCreditPayment(double amount)
+        private bool CCCreditPayment(double amount)
         {
             UsedCredit -= amount;
 
@@ -385,6 +453,8 @@ namespace BankEncapsulation.CreditCard
 
             CCTransaction transaction1 = new CCTransaction(now, now.Year, now.Month, now.Day, "Payment", amount * -1, AvailableCredit, UsedCredit);
             myCCTransactionHistory.TransactionHist_0.Add(transaction1);
+
+            return true;
         }
     }
 }

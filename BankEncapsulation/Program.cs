@@ -28,58 +28,8 @@ namespace BankEncapsulation
 
             //*****************************************************************************************************************
 
-        //public static void Main(string[] args)
-        //{
-        //    Console.WriteLine("K&R Banking\n-Input option number:\n1. Personal info\n2. Account info\n3. Credit Cards\n4. Loans\n5. Help");
-        //    switch(ScreenSelect.ValidInput(5))
-        //    {
-        //        case 1: //personal info
-        //            Console.Clear();
-        //            Console.WriteLine("1. View Profile\n2. Edit Profile");
-        //            switch(ScreenSelect.ValidInput(2))
-        //            {
-        //                case 1:
-        //                    Console.Clear();
-        //                    Console.WriteLine();
-        //                    break;
-
-        //                case 2:
-        //                    Console.Clear();
-        //                    Console.WriteLine();
-        //                    break;
-        //            }
-        //            break;
-
-        //        case 2:
-        //            Console.Clear();
-        //            Console.WriteLine();
-        //            break;
-
-        //        case 3:
-        //            Console.Clear();
-                    
-        //            Console.WriteLine();
-        //            break;
-
-        //        case 4:
-        //            Console.Clear();
-        //            Console.WriteLine();
-        //            break;
-
-        //        case 5:
-        //            Console.Clear();
-        //            Console.WriteLine();
-        //            break;
-
-        //    }
-            //ScreenSelect.SelectScreen();
-            //BankAccount Erans_Checking = new BankAccount();           
-            //Erans_Checking.Deposit(2500);
-            //Console.WriteLine(Erans_Checking.GetBalance());
-            //Erans_Checking.Withdraw(500);
-            //Console.WriteLine(Erans_Checking.GetBalance());
-            Console.WriteLine("\nSet-Up Successful");
-            Console.WriteLine("\nPress any key to continue to the Start-Up screen.\n");
+            Console.WriteLine("Set-Up Successful\n\n");
+            Console.WriteLine("Press any key to continue to the Start-Up screen.\n\n");
             Console.ReadKey();
 
             StartUpScreen.GoToStartUpScreen(EJ_Checking, EJ_CreditCard, EJ_Loan);
@@ -87,8 +37,12 @@ namespace BankEncapsulation
             MainMenuScreen.GoToMainScreen(EJ_Checking, EJ_CreditCard, EJ_Loan);
             MainOrExit.GoToMainOrExit(EJ_Checking, EJ_CreditCard, EJ_Loan);
             LoginScreen.GoToLoginScreen(EJ_Checking, EJ_CreditCard, EJ_Loan);
-            PersonalInformation.PIChangeAnnualSalary.GoToChangeAnnualSalary(EJ_Checking, EJ_CreditCard, EJ_Loan);
             StartUpScreen.GoToStartUpScreen(EJ_Checking, EJ_CreditCard, EJ_Loan);
+
+            PersonalInformation.PersonalInfoMainScreen.GoToPersonalInformationMainScreen(EJ_Checking, EJ_CreditCard, EJ_Loan);
+            PersonalInformation.PIChangeAnnualSalary.GoToChangeAnnualSalary(EJ_Checking, EJ_CreditCard, EJ_Loan);
+            PersonalInformation.PIChangePassword.GoToChangePassword(EJ_Checking, EJ_CreditCard, EJ_Loan);
+            PersonalInformation.PIChangeUsername.GoToChangeUsername(EJ_Checking, EJ_CreditCard, EJ_Loan);
 
             BankAccount.BankAccountMainScreen.GoToBankAccountMainScreen(EJ_Checking, EJ_CreditCard, EJ_Loan);
             BankAccount.BACheckBalance.GoToBankAccountBalance(EJ_Checking, EJ_CreditCard, EJ_Loan);
@@ -96,7 +50,16 @@ namespace BankEncapsulation
             BankAccount.BAWithdrawal.GoToBankAccountWithdrawal(EJ_Checking, EJ_CreditCard, EJ_Loan);
 
             CreditCard.CreditCardMainScreen.GoToCreditCardMainScreen(EJ_Checking, EJ_CreditCard, EJ_Loan);
-            //More Options Here
+            CreditCard.CCAvailableCredit.GoToCheckAvaialbleCredit(EJ_Checking, EJ_CreditCard, EJ_Loan);
+            CreditCard.CCChangeCreditLimit.GoToChangeCreditLimit(EJ_Checking, EJ_CreditCard, EJ_Loan);
+            CreditCard.CCCheckCreditLimit.GoToCheckCreditLimit(EJ_Checking, EJ_CreditCard, EJ_Loan);
+            CreditCard.CCCurrentBalance.GoToCheckCurrentBalance(EJ_Checking, EJ_CreditCard, EJ_Loan);
+            CreditCard.CCMakePaymentClass.GoToMakePayment(EJ_Checking, EJ_CreditCard, EJ_Loan);
+            CreditCard.CCMakePurchaseClass.GoToMakePurchase(EJ_Checking, EJ_CreditCard, EJ_Loan);
+            CreditCard.CCTransactionHistoryAll.GoToTransactionHistoryAll(EJ_Checking, EJ_CreditCard, EJ_Loan);
+            CreditCard.CCTransactionHistoryLastStatement.GoToTransactionHistoryLastStatment(EJ_Checking, EJ_CreditCard, EJ_Loan);
+            CreditCard.CCTransactionHistoryRange.GoToTransactionHistoryRange(EJ_Checking, EJ_CreditCard, EJ_Loan);
+            CreditCard.CreditCardTransHistorySubScreen.GoToTransHistorySubScreen(EJ_Checking, EJ_CreditCard, EJ_Loan);
 
             Loans.LoansMainScreen.GoToLoansMainScreen(EJ_Checking, EJ_CreditCard, EJ_Loan);
             Loans.LCheckLoanDetails.GoToCheckLoanDetails(EJ_Checking, EJ_CreditCard, EJ_Loan);

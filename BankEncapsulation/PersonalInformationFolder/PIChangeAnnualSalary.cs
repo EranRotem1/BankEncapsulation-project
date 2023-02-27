@@ -11,12 +11,23 @@ namespace BankEncapsulation.PersonalInformation
         public static void GoToChangeAnnualSalary(BankAccount.BankAccount account, CreditCard.CreditCard card, Loans.Loan loan)
         {
             Console.Clear();
-            Console.WriteLine("Change Annual Salary\n");
+            Console.WriteLine("Change Annual Salary Screen\n\n");
+            string answer = "N";
+            while (answer == "N")
+            {
+                double salary = ValidInputAmount.AmountValidEntry("new annual salary");
 
-            Console.WriteLine("Please enter the new annual salary (digits only):");
-            //Code for reading in and validating deposit (type double)
-            //Code for double checking input is correct
-            //Code for (object).Deposit
+                Console.WriteLine($"\nIs your entry of ${salary} correct?\n\n");
+                answer = DoubleCheckSelection.DoubleCheckYesNo();
+
+                if (answer == "Y")
+                {
+                    HardCodedUserInfoClass.SetAnnualIncome(salary);
+                    Console.WriteLine("\n*****************************************************************************\n\n");
+                    Console.WriteLine("Annual salary changed successfully. \n\n");
+                    break;
+                }
+            }
             MainOrExit.GoToMainOrExit(account, card, loan);
         }
     }

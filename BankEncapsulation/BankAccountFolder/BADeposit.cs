@@ -16,6 +16,7 @@ namespace BankEncapsulation.BankAccount
             double amount = double.Parse(Console.ReadLine());
             //Code for reading in and validating deposit (type double)
             //Code for double checking input is correct
+            //Code for (object).Deposit
             account.Deposit(amount);
             BACheckBalance.GoToBankAccountBalance(account, card, loan);
             //Code to either return to main screen or log off.

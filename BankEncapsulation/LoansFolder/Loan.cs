@@ -73,7 +73,7 @@ namespace BankEncapsulation.Loans
             LLoanPayment(amount);
             myLTransactionHistory.LTransactionHist_0.Add(transaction6);
 
-            Console.WriteLine("\nLoan Payment log creation successful");
+            Console.WriteLine("Loan Payment log creation successful.\n\n");
         }
 
     }

@@ -81,7 +81,7 @@ namespace BankEncapsulation.BankAccount
             Withdraw(amount);
             myBATransactionHistory.BATransactionHist_0.Add(transaction6);
 
-            Console.WriteLine("Bank Account Credit log creation successful");
+            Console.WriteLine("Bank Account Credit log creation successful.\n\n");
         }
 
         public void CreateTestLogIn(double amount) //Money going into the account
@@ -123,7 +123,7 @@ namespace BankEncapsulation.BankAccount
             Deposit(amount);
             myBATransactionHistory.BATransactionHist_0.Add(transaction6);
 
-            Console.WriteLine("Bank Account Debit log creation successful");
+            Console.WriteLine("Bank Account Debit log creation successful.\n\n");
         }
 
     }

@@ -11,27 +11,91 @@ namespace BankEncapsulation.PersonalInformation
         public static void GoToChangePassword(BankAccount.BankAccount account, CreditCard.CreditCard card, Loans.Loan loan)
         {
             Console.Clear();
-            Console.WriteLine("Change Password\n");
-            string password1 = "1";
-            string password2 = "2";
+            Console.WriteLine("Change Password Screen\n\n");
+
+            string oldPass = HardCodedUserInfoClass.GetPassword();
+            string entry = null;
+
+            Console.WriteLine("\n\nPlease enter your old password:\n\n");
+            while (true)
+            {
+                var key = Console.ReadKey(true);
+                if (key.Key == ConsoleKey.Enter)
+                    break;
+                entry += key.KeyChar;
+                Console.Write("*");
+            }
+            Console.WriteLine();
+            while (entry != oldPass)
+            {
+                entry = null;
+                Console.WriteLine("\n\nInvalid Entry. Please try again.\n\n");
+                while (true)
+                {
+                    var key = Console.ReadKey(true);
+                    if (key.Key == ConsoleKey.Enter)
+                        break;
+                    entry += key.KeyChar;
+                    Console.Write("*");
+                }
+            }
+            Console.WriteLine();
+
+            Console.WriteLine($"\nPlease enter your new password.\n\n");
+            string password1 = null;
+            while (true)
+            {
+                var key = Console.ReadKey(true);
+                if (key.Key == ConsoleKey.Enter)
+                    break;
+                password1 += key.KeyChar;
+                Console.Write("*");
+            }
+            Console.WriteLine();
+
+            Console.WriteLine($"Please enter your new password again.\n\n");
+            string password2 = null;
+            while (true)
+            {
+                var key = Console.ReadKey(true);
+                if (key.Key == ConsoleKey.Enter)
+                    break;
+                password2 += key.KeyChar;
+                Console.Write("*");
+            }
+            Console.WriteLine();
 
             while (password1 != password2)
             {
-                Console.WriteLine("Please enter the new desired username:");
-                password1 = Console.ReadLine();
-                Console.WriteLine("Please enter the new desired username again:");
-                password2 = Console.ReadLine();
-                if (password1 != password2)
+                Console.WriteLine("\n\nPassword entries did not match. Try Again.\n\n");
+                Console.WriteLine($"Please enter your new password. Hit \"Enter\" when finished.\n\n");
+                password1 = null;
+                while (true)
                 {
-                    Console.WriteLine("Usernames entered do not match. Try again.");
+                    var key = Console.ReadKey(true);
+                    if (key.Key == ConsoleKey.Enter)
+                        break;
+                    password1 += key.KeyChar;
+                    Console.Write("*");
                 }
-                else
+                Console.WriteLine();
+                Console.WriteLine($"Please enter your new password again. Hit \"Enter\" when finished.\n\n");
+                password2 = null;
+                while (true)
                 {
-                    Console.WriteLine("Password entered match.");
+                    var key = Console.ReadKey(true);
+                    if (key.Key == ConsoleKey.Enter)
+                        break;
+                    password2 += key.KeyChar;
+                    Console.Write("*");
                 }
-
+                Console.WriteLine();
             }
-            //Code for actually changing password
+
+            HardCodedUserInfoClass.SetPassword(password1);
+            Console.WriteLine("\n*****************************************************************************\n\n");
+            Console.WriteLine("Password changed successfully. \n\n");
+
             MainOrExit.GoToMainOrExit(account, card, loan);
         }
     }
